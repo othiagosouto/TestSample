@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "br.com.tsouto.testsample"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        animationsDisabled true
+        unitTests.includeAndroidResources true
+        unitTests.returnDefaultValues true
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    }
+
+    sourceSets {
+        androidTest {
+            java.srcDirs += "src/sharedTest/java"
+            kotlin.srcDirs += "src/sharedTest/java"
+        }
+        test {
+            java.srcDirs += "src/sharedTest/java"
+            kotlin.srcDirs += "src/sharedTest/java"
+        }
+    }
+}
+
+def allTestsConfigs(dependency) {
+    dependencies.add('testImplementation', dependency)
+    dependencies.add('androidTestImplementation', dependency)
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'org.koin:koin-android:1.0.2'
+
+    //Android Testing Stuff
+    testImplementation "org.robolectric:robolectric:4.2"
+    allTestsConfigs "androidx.test:core:1.1.0"
+    allTestsConfigs 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    allTestsConfigs 'androidx.test.ext:junit:1.1.0'
+
+    testImplementation('io.mockk:mockk:1.9.3')
+    androidTestImplementation('io.mockk:mockk-android:1.9.3') { exclude module: 'objenesis' }
+    androidTestImplementation 'org.objenesis:objenesis:2.6'
+    androidTestUtil "androidx.test:orchestrator:1.1.1"
+
+}

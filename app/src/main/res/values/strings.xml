@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TestSample</string>
+    <string name="age_pattern">%1$d anos</string>
+</resources>
